@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Audit Internal UMKM</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f14;
+    --card: #17171f;
+    --card2: #1e1e28;
+    --red: #ff3d6b;
+    --orange: #ff8c42;
+    --green: #00d68f;
+    --blue: #4da6ff;
+    --purple: #b06bff;
+    --yellow: #ffd166;
+    --white: #f0f0f5;
+    --muted: #666680;
+    --border: #2a2a38;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0f0f14 0%, #1a0a1e 50%, #0a1020 100%);
+    padding: 48px 20px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,61,107,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-icon {
+    font-size: 52px;
+    display: block;
+    margin-bottom: 16px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ff3d6b, #ff8c42);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,61,107,0.15);
+    border: 1px solid rgba(255,61,107,0.3);
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    padding: 20px 20px 0;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .progress-count {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--orange));
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+
+  /* INFO FORM */
+  .info-form {
+    margin: 20px 20px 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .info-form h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .form-field label {
+    font-size: 12px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-field input {
+    width: 100%;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input:focus {
+    border-color: var(--red);
+  }
+
+  /* SECTION TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    padding: 20px 20px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab.active {
+    color: var(--white);
+    border-color: transparent;
+  }
+  .tab[data-section="kas"].active { background: var(--orange); }
+  .tab[data-section="stok"].active { background: var(--green); color: #0f1a14; }
+  .tab[data-section="penjualan"].active { background: var(--blue); }
+  .tab[data-section="biaya"].active { background: var(--purple); }
+  .tab[data-section="rekap"].active { background: var(--red); }
+
+  /* CHECKLIST SECTIONS */
+  .section { display: none; padding: 16px 20px 0; }
+  .section.active { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .section-header.kas { background: linear-gradient(135deg, rgba(255,140,66,0.15), rgba(255,140,66,0.05)); border: 1px solid rgba(255,140,66,0.2); }
+  .section-header.stok { background: linear-gradient(135deg, rgba(0,214,143,0.15), rgba(0,214,143,0.05)); border: 1px solid rgba(0,214,143,0.2); }
+  .section-header.penjualan { background: linear-gradient(135deg, rgba(77,166,255,0.15), rgba(77,166,255,0.05)); border: 1px solid rgba(77,166,255,0.2); }
+  .section-header.biaya { background: linear-gradient(135deg, rgba(176,107,255,0.15), rgba(176,107,255,0.05)); border: 1px solid rgba(176,107,255,0.2); }
+
+  .section-emoji { font-size: 28px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; }
+  .section-count { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* SUBSECTION */
+  .subsection {
+    margin-bottom: 16px;
+  }
+  .subsection-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    padding: 8px 0 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  /* CHECKLIST ITEM */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .check-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--border);
+    transition: background 0.2s;
+  }
+  .check-item:active { transform: scale(0.98); }
+  .check-item.done { background: rgba(0,214,143,0.05); border-color: rgba(0,214,143,0.2); }
+  .check-item.done::before { background: var(--green); }
+  .check-item.issue { background: rgba(255,140,66,0.05); border-color: rgba(255,140,66,0.2); }
+  .check-item.issue::before { background: var(--orange); }
+
+  .check-box {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .check-item.done .check-box {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .check-item.issue .check-box {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .check-content { flex: 1; }
+  .check-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--white);
+    transition: color 0.2s;
+  }
+  .check-item.done .check-text { color: var(--muted); text-decoration: line-through; }
+  .check-note {
+    margin-top: 8px;
+    width: 100%;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--white);
+    outline: none;
+    resize: none;
+    display: none;
+  }
+  .check-item.done .check-note,
+  .check-item.issue .check-note { display: block; }
+  .check-note:focus { border-color: var(--orange); }
+  .check-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    display: none;
+  }
+  .check-item.done .check-actions,
+  .check-item.issue .check-actions { display: flex; }
+  .action-btn {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card2);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .action-btn:hover { color: var(--white); border-color: var(--muted); }
+  .action-btn.active-issue {
+    background: rgba(255,140,66,0.15);
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* REKAP */
+  .rekap-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .rekap-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .rekap-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rekap-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .rekap-emoji { font-size: 20px; width: 28px; text-align: center; }
+  .rekap-info { flex: 1; }
+  .rekap-name { font-size: 14px; font-weight: 500; }
+  .rekap-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .rekap-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rekap-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    min-width: 40px;
+    text-align: right;
+  }
+  .mini-bar {
+    width: 60px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .mini-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--red), var(--orange));
+    transition: width 0.5s;
+  }
+
+  .big-stat {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); }
+  .stat-box.done .stat-num { color: var(--green); }
+  .stat-box.issue .stat-num { color: var(--orange); }
+  .stat-box.total .stat-num { color: var(--white); }
+
+  /* EXPORT BTN */
+  .export-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    border: none;
+    border-radius: 14px;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity 0.2s;
+  }
+  .export-btn:active { opacity: 0.85; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 20px 20px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .footer strong { color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-icon">🔒</span>
+  <h1>Checklist Audit Internal UMKM</h1>
+  <p>Percaya boleh, Kontrol WAJIB!</p>
+  <span class="hero-badge">Simpel · Praktis · Langsung Pakai</span>
+</div>
+
+<div class="progress-section">
+  <div class="progress-header">
+    <span class="progress-label">Progress Audit</span>
+    <span class="progress-count" id="progress-text">0 / 47 selesai</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-bar"></div>
+  </div>
+</div>
+
+<div class="info-form">
+  <h3>📋 Info Audit</h3>
+  <div class="form-row">
+    <div class="form-field">
+      <label>Nama Bisnis</label>
+      <input type="text" id="bisnis" placeholder="Contoh: Toko Berkah Jaya">
+    </div>
+    <div class="form-field">
+      <label>Tanggal Audit</label>
+      <input type="date" id="tanggal">
+    </div>
+    <div class="form-field">
+      <label>Nama Auditor</label>
+      <input type="text" id="auditor" placeholder="Nama kamu / yang mengaudit">
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-section="kas">💰 Kas & Bank</button>
+  <button class="tab" data-section="stok">📦 Stok</button>
+  <button class="tab" data-section="penjualan">🧾 Penjualan</button>
+  <button class="tab" data-section="biaya">📋 Biaya</button>
+  <button class="tab" data-section="rekap">📊 Rekap</button>
+</div>
+
+<!-- KAS & BANK -->
+<div class="section active" id="sec-kas">
+  <div class="section-header kas">
+    <span class="section-emoji">💰</span>
+    <div>
+      <div class="section-title" style="color:#ff8c42">Kas & Bank</div>
+      <div class="section-count">12 item checklist</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Kas Fisik Harian</div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Cocokkan saldo kas fisik dengan buku kas setiap hari</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Setiap penerimaan langsung dicatat + ada bukti (kwitansi)</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Setiap pengeluaran ada bukti pendukung (nota/invoice)</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Tidak ada uang kas yang dibawa pulang oleh karyawan</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Rekening Bank</div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Rekonsiliasi rekening koran vs buku besar setiap bulan</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Tidak ada transaksi aneh/tidak dikenal di mutasi rekening</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Rekening bisnis terpisah dari rekening pribadi owner</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Akses internet banking hanya untuk orang yang berwenang</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Kontrol Pengeluaran</div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Pengeluaran di atas batas tertentu butuh tanda tangan 2 pihak</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Tidak ada pengeluaran tanpa persetujuan owner/manajer</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Uang muka/bon sudah dikembalikan atau dilaporkan tepat waktu</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleItem(this)">
+      <div class="check-box"></div>
+      <div class="check-content">
+        <div class="check-text">Tidak ada cek/giro kosong atau transfer ke rekening tidak dikenal</div>
+        <div class="check-actions">
+          <button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button>
+          <button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button>
+        </div>
+        <textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STOK -->
+<div class="section" id="sec-stok">
+  <div class="section-header stok">
+    <span class="section-emoji">📦</span>
+    <div>
+      <div class="section-title" style="color:#00d68f">Stok Barang</div>
+      <div class="section-count">12 item checklist</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Pencatatan Stok</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Setiap barang masuk dicatat di kartu stok / sistem</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Setiap barang keluar dicatat dan ada dokumen pengeluaran</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Kartu stok diupdate setiap hari (tidak menumpuk)</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Kode barang konsisten antara fisik dan catatan/sistem</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Stock Opname</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Stock opname (hitung fisik) dilakukan minimal 1x sebulan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Selisih stok >1% dari total inventaris langsung diinvestigasi</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Ada berita acara / dokumentasi hasil stock opname</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Barang rusak/kadaluarsa dipisahkan dan dicatat</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Kontrol Gudang</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Akses ke gudang/stok terbatas hanya untuk yang berwenang</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Orang yang pegang stok berbeda dengan yang pegang pembukuan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada barang keluar tanpa dokumen resmi (surat jalan/PO)</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Ada sistem pengamanan fisik di area stok (CCTV / kunci)</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+</div>
+
+<!-- PENJUALAN -->
+<div class="section" id="sec-penjualan">
+  <div class="section-header penjualan">
+    <span class="section-emoji">🧾</span>
+    <div>
+      <div class="section-title" style="color:#4da6ff">Penjualan & Piutang</div>
+      <div class="section-count">11 item checklist</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Pencatatan Penjualan</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Setiap transaksi punya nomor invoice unik dan berurutan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada nomor invoice yang loncat atau dobel</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Laporan penjualan harian diverifikasi oleh owner/manajer</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Total penjualan dicocokkan dengan uang masuk ke kas/bank</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Diskon & Retur</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Setiap diskon ada persetujuan tertulis sebelum diberikan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Retur barang ada dokumen pendukung dan dicatat di stok</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada diskon yang diberikan sepihak oleh kasir/sales</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Piutang & Penagihan</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Daftar piutang diupdate setiap minggu</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Piutang >30 hari langsung ditagih secara aktif</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Penghapusan piutang hanya dengan persetujuan owner</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada piutang yang dihapus tanpa dokumentasi</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+</div>
+
+<!-- BIAYA -->
+<div class="section" id="sec-biaya">
+  <div class="section-header biaya">
+    <span class="section-emoji">📋</span>
+    <div>
+      <div class="section-title" style="color:#b06bff">Biaya Operasional</div>
+      <div class="section-count">12 item checklist</div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Kontrol Anggaran</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Ada anggaran biaya bulanan yang sudah ditetapkan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Realisasi biaya dibandingkan dengan anggaran setiap bulan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Biaya yang melebihi anggaran >10% langsung diinvestigasi</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada biaya "titipan" yang tidak jelas peruntukannya</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Pembelian & Vendor</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Setiap pembelian >Rp 500rb ada invoice resmi dari vendor</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Vendor baru diverifikasi identitasnya sebelum dipakai</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada vendor yang terafiliasi diam-diam dengan karyawan</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Pembelian rutin: bandingkan harga minimal 2-3 vendor</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+
+  <div class="subsection">
+    <div class="subsection-title">Biaya SDM</div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Absensi karyawan diverifikasi sebelum proses gaji</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Lembur dicatat dan disetujui sebelum dibayar</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tidak ada "karyawan hantu" di daftar gaji</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+    <div class="check-item" onclick="toggleItem(this)"><div class="check-box"></div><div class="check-content"><div class="check-text">Tunjangan dan bonus sesuai kebijakan yang sudah disepakati</div><div class="check-actions"><button class="action-btn" onclick="markIssue(event, this)">⚠️ Ada Masalah</button><button class="action-btn" onclick="resetItem(event, this)">↩ Reset</button></div><textarea class="check-note" placeholder="Catatan temuan..." rows="2" onclick="event.stopPropagation()"></textarea></div></div>
+  </div>
+</div>
+
+<!-- REKAP -->
+<div class="section" id="sec-rekap">
+  <div style="padding-top: 4px;">
+    <div class="big-stat">
+      <div class="stat-box done">
+        <div class="stat-num" id="stat-done">0</div>
+        <div class="stat-label">✅ Selesai</div>
+      </div>
+      <div class="stat-box issue">
+        <div class="stat-num" id="stat-issue">0</div>
+        <div class="stat-label">⚠️ Masalah</div>
+      </div>
+      <div class="stat-box total">
+        <div class="stat-num" id="stat-total">47</div>
+        <div class="stat-label">Total Item</div>
+      </div>
+    </div>
+
+    <div class="rekap-card">
+      <h3>Progress Per Area</h3>
+      <div class="rekap-row">
+        <span class="rekap-emoji">💰</span>
+        <div class="rekap-info">
+          <div class="rekap-name">Kas & Bank</div>
+          <div class="rekap-sub" id="sub-kas">0 / 12 selesai</div>
+        </div>
+        <div class="rekap-progress">
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-kas"></div></div>
+          <span class="rekap-pct" id="pct-kas" style="color:var(--orange)">0%</span>
+        </div>
+      </div>
+      <div class="rekap-row">
+        <span class="rekap-emoji">📦</span>
+        <div class="rekap-info">
+          <div class="rekap-name">Stok Barang</div>
+          <div class="rekap-sub" id="sub-stok">0 / 12 selesai</div>
+        </div>
+        <div class="rekap-progress">
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-stok"></div></div>
+          <span class="rekap-pct" id="pct-stok" style="color:var(--green)">0%</span>
+        </div>
+      </div>
+      <div class="rekap-row">
+        <span class="rekap-emoji">🧾</span>
+        <div class="rekap-info">
+          <div class="rekap-name">Penjualan & Piutang</div>
+          <div class="rekap-sub" id="sub-penjualan">0 / 11 selesai</div>
+        </div>
+        <div class="rekap-progress">
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-penjualan"></div></div>
+          <span class="rekap-pct" id="pct-penjualan" style="color:var(--blue)">0%</span>
+        </div>
+      </div>
+      <div class="rekap-row">
+        <span class="rekap-emoji">📋</span>
+        <div class="rekap-info">
+          <div class="rekap-name">Biaya Operasional</div>
+          <div class="rekap-sub" id="sub-biaya">0 / 12 selesai</div>
+        </div>
+        <div class="rekap-progress">
+          <div class="mini-bar"><div class="mini-bar-fill" id="bar-biaya"></div></div>
+          <span class="rekap-pct" id="pct-biaya" style="color:var(--purple)">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="export-btn" onclick="exportRekap()">📄 Export Rekap sebagai Teks</button>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>🔒 Checklist Audit Internal UMKM</strong><br>
+  Percaya boleh, Kontrol WAJIB!<br>
+  #AuditUMKM · #InternalControl · #AntiFraud
+</div>
+
+<script>
+  const TOTALS = { kas: 12, stok: 12, penjualan: 11, biaya: 12 };
+
+  function toggleItem(el) {
+    if (el.classList.contains('issue')) return;
+    if (el.classList.contains('done')) {
+      el.classList.remove('done');
+      el.querySelector('.check-box').textContent = '';
+    } else {
+      el.classList.add('done');
+      el.querySelector('.check-box').textContent = '✓';
+    }
+    updateProgress();
+  }
+
+  function markIssue(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.check-item');
+    item.classList.remove('done');
+    item.classList.toggle('issue');
+    if (item.classList.contains('issue')) {
+      item.querySelector('.check-box').textContent = '⚠';
+      btn.classList.add('active-issue');
+    } else {
+      item.querySelector('.check-box').textContent = '';
+      btn.classList.remove('active-issue');
+    }
+    updateProgress();
+  }
+
+  function resetItem(e, btn) {
+    e.stopPropagation();
+    const item = btn.closest('.check-item');
+    item.classList.remove('done', 'issue');
+    item.querySelector('.check-box').textContent = '';
+    item.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active-issue'));
+    item.querySelector('.check-note').value = '';
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const allItems = document.querySelectorAll('.check-item');
+    const total = allItems.length;
+    const done = document.querySelectorAll('.check-item.done').length;
+    const issues = document.querySelectorAll('.check-item.issue').length;
+
+    document.getElementById('progress-text').textContent = `${done} / ${total} selesai`;
+    document.getElementById('progress-bar').style.width = `${(done / total) * 100}%`;
+    document.getElementById('stat-done').textContent = done;
+    document.getElementById('stat-issue').textContent = issues;
+
+    ['kas','stok','penjualan','biaya'].forEach(sec => {
+      const secItems = document.querySelectorAll(`#sec-${sec} .check-item`);
+      const secDone = document.querySelectorAll(`#sec-${sec} .check-item.done`).length;
+      const secTotal = TOTALS[sec];
+      const pct = Math.round((secDone / secTotal) * 100);
+      document.getElementById(`sub-${sec}`).textContent = `${secDone} / ${secTotal} selesai`;
+      document.getElementById(`bar-${sec}`).style.width = `${pct}%`;
+      document.getElementById(`pct-${sec}`).textContent = `${pct}%`;
+    });
+  }
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(`sec-${tab.dataset.section}`).classList.add('active');
+      if (tab.dataset.section === 'rekap') updateProgress();
+    });
+  });
+
+  function exportRekap() {
+    const bisnis = document.getElementById('bisnis').value || '(tidak diisi)';
+    const tanggal = document.getElementById('tanggal').value || '(tidak diisi)';
+    const auditor = document.getElementById('auditor').value || '(tidak diisi)';
+
+    let text = `🔒 REKAP AUDIT INTERNAL UMKM\n`;
+    text += `================================\n`;
+    text += `Bisnis   : ${bisnis}\n`;
+    text += `Tanggal  : ${tanggal}\n`;
+    text += `Auditor  : ${auditor}\n`;
+    text += `================================\n\n`;
+
+    ['kas','stok','penjualan','biaya'].forEach(sec => {
+      const labels = { kas: '💰 KAS & BANK', stok: '📦 STOK BARANG', penjualan: '🧾 PENJUALAN & PIUTANG', biaya: '📋 BIAYA OPERASIONAL' };
+      text += `${labels[sec]}\n`;
+      document.querySelectorAll(`#sec-${sec} .check-item`).forEach((item, i) => {
+        const status = item.classList.contains('done') ? '✅' : item.classList.contains('issue') ? '⚠️' : '❌';
+        const txt = item.querySelector('.check-text').textContent;
+        const note = item.querySelector('.check-note').value;
+        text += `${status} ${txt}\n`;
+        if (note) text += `   → ${note}\n`;
+      });
+      text += `\n`;
+    });
+
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `audit_${bisnis.replace(/\s/g,'_')}_${tanggal}.txt`;
+    a.click();
+  }
+
+  // Set default date
+  document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>
